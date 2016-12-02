@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -14,6 +15,12 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.observers.Observers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,10 +28,33 @@ public class MainActivity extends AppCompatActivity {
     TextView text_id_1, text_name_1, text_marks_1;
     TextView text_id_2, text_name_2, text_marks_2;
 
+    int i = 0;
+
+    Subscriber<String> subscriber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        subscriber = new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            }
+        };
+
+//        subscriber.unsubscribe();
 
         text_id_1 = (TextView) findViewById(R.id.text_id_1);
         text_name_1 = (TextView) findViewById(R.id.text_name_1);
@@ -37,24 +67,9 @@ public class MainActivity extends AppCompatActivity {
         Button ButtonArray = (Button) findViewById(R.id.RetrofitArray);
         Button ButtonObject = (Button) findViewById(R.id.RetrofitObject);
 
-        ButtonArray.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View VisibleArray = findViewById(R.id.RetrofitArray);
-                VisibleArray.setVisibility(View.GONE);
-                View VisibleObject = findViewById(R.id.RetrofitObject);
-                VisibleObject.setVisibility(View.GONE);
-                getRetrofitArray();
-            }
-        });
-
         ButtonObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View VisibleArray = findViewById(R.id.RetrofitArray);
-                VisibleArray.setVisibility(View.GONE);
-                View VisibleObject = findViewById(R.id.RetrofitObject);
-                VisibleObject.setVisibility(View.GONE);
                 getRetrofitObject();
             }
         });
@@ -62,52 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void getRetrofitArray() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RetrofitArrayAPI service = retrofit.create(RetrofitArrayAPI.class);
-
-        Call<List<Student>> call = service.getStudentDetails();
-
-        call.enqueue(new Callback<List<Student>>() {
-            @Override
-            public void onResponse(Response<List<Student>> response, Retrofit retrofit) {
-
-                try {
-
-                    List<Student> StudentData = response.body();
-
-                    for (int i = 0; i < StudentData.size(); i++) {
-
-                        if (i == 0) {
-                            text_id_1.setText("StudentId  :  " + StudentData.get(i).getStudentId());
-                            text_name_1.setText("StudentName  :  " + StudentData.get(i).getStudentName());
-                            text_marks_1.setText("StudentMarks  : " + StudentData.get(i).getStudentMarks());
-                        } else if (i == 1) {
-                            text_id_2.setText("StudentId  :  " + StudentData.get(i).getStudentId());
-                            text_name_2.setText("StudentName  :  " + StudentData.get(i).getStudentName());
-                            text_marks_2.setText("StudentMarks  : " + StudentData.get(i).getStudentMarks());
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    Log.d("onResponse", "There is an error");
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.d("onFailure", t.toString());
-            }
-        });
-    }
 
     void getRetrofitObject() {
 
@@ -122,26 +91,24 @@ public class MainActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<Student>() {
             @Override
-            public void onResponse(Response<Student> response, Retrofit retrofit) {
-
-                try {
-
-                    text_id_1.setText("StudentId  :  " + response.body().getStudentId());
-                    text_name_1.setText("StudentName  :  " + response.body().getStudentName());
-                    text_marks_1.setText("StudentMarks  : " + response.body().getStudentMarks());
-
-                } catch (Exception e) {
-                    Log.d("onResponse", "There is an error");
-                    e.printStackTrace();
-                }
-
+            public void onResponse(final Response<Student> response, Retrofit retrofit) {
+                Observable.create(new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(Subscriber<? super String> subscriber) {
+                        subscriber.onNext(response.body().getStudentName());
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.newThread())
+                            .subscribe(subscriber);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d("onFailure", t.toString());
+
             }
         });
+
+
     }
 
 
