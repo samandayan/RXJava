@@ -11,7 +11,7 @@ public class ClientManager {
 
 
     private static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://androidtutorialpoint.com/")
+            .baseUrl(Constants.url)
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();

@@ -2,9 +2,9 @@ package com.packtpub.retrofit;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.packtpub.retrofit.network.ClientManager;
 import com.packtpub.retrofit.network.NetworkManager;
@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNext(Student student) {
-                Toast.makeText(getApplicationContext(), student.getStudentName(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), student.getGender(), Toast.LENGTH_LONG).show();
+                Log.i("asd", "Name is: " + student.getGender());
             }
         });
     }

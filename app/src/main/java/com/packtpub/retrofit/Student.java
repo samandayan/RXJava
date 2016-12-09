@@ -2,40 +2,13 @@ package com.packtpub.retrofit;
 
 public class Student {
 
-    //Variables that are in our json
-    private int StudentId;
-    private String StudentName;
-    private String StudentMarks;
+    private String gender;
 
-    public static String a;
-
-    static {
-
+    public Student(String studentName) {
+        gender = studentName;
     }
 
-    //Getters and setters
-    public int getStudentId() {
-        return StudentId;
+    public String getGender() {
+        return gender;
     }
-
-    public void setStudentId(int bookId) {
-        this.StudentId = bookId;
-    }
-
-    public String getStudentName() {
-        return StudentName;
-    }
-
-    public void setStudentName(String name) {
-        this.StudentName = name;
-    }
-
-    public String getStudentMarks() {
-        return StudentMarks;
-    }
-
-    public void setStudentMarks(String price) {
-        this.StudentMarks = price;
-    }
-
 }

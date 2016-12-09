@@ -16,6 +16,6 @@ public interface RetrofitObjectAPI {
      * Retrofit get annotation with our URL
      * And our method that will return us details of student.
     */
-    @GET("api/RetrofitAndroidObjectResponse")
-    Observable<Student> getStudentDetails();
+    @GET("api/")
+    Observable<Student> getStudentDetails(@Query("numberOfStudents") int numberOfStudents);
 }
