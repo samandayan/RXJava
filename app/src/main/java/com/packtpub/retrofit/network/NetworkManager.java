@@ -14,6 +14,7 @@ import rx.schedulers.Schedulers;
 public class NetworkManager {
     public static void retrieveStudentName(
             @NonNull final RetrofitObjectAPI retrofitObjectAPI,
+            @NonNull final int numberOfStudent,
             @NonNull final Subscriber<Student> subscriber) {
             retrofitObjectAPI.getStudentDetails()
                     .observeOn(AndroidSchedulers.mainThread())

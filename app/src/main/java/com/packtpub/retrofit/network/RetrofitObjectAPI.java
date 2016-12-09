@@ -5,6 +5,7 @@ import com.packtpub.retrofit.Student;
 import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 ;
@@ -17,7 +18,4 @@ public interface RetrofitObjectAPI {
     */
     @GET("api/RetrofitAndroidObjectResponse")
     Observable<Student> getStudentDetails();
-
-    @GET("api/RetrofitAndroidArrayResponse")
-    Observable<List<Student>> getStudentList();
 }
