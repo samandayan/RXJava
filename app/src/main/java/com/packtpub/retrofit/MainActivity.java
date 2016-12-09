@@ -15,29 +15,12 @@ import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity {
 
-    Subscriber<Student> subscriber;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       subscriber = new Subscriber<Student>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Student s) {
-                Toast.makeText(getApplicationContext(), s.getStudentName(), Toast.LENGTH_LONG).show();
-            }
-        };;
-       Button ButtonObject = (Button) findViewById(R.id.RetrofitObject);
+        Button ButtonObject = (Button) findViewById(R.id.RetrofitObject);
 
         ButtonObject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +31,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRetrofitObject() {
-        NetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class),Constants.NUMBER_OF_STUDENT, subscriber);
+        NetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class), Constants.NUMBER_OF_STUDENT, new Subscriber<Student>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Student student) {
+                Toast.makeText(getApplicationContext(), student.getStudentName(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
