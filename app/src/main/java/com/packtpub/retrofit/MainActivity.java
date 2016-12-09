@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRetrofitObject() {
-        NetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class), Constants.NUMBER_OF_STUDENT, new Subscriber<Student>() {
+        NetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class), Constants.NUMBER_OF_STUDENT, new Subscriber<Results>() {
             @Override
             public void onCompleted() {
             }
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(Student student) {
+            public void onNext(Results results) {
                 // Toast.makeText(getApplicationContext(), student.getGender(), Toast.LENGTH_LONG).show();
-                Log.i("asd", "Name is: " + student.getGender());
+                Log.i("asd", "Name is: " + results.getResults().get(0).getName().getFirst());
             }
         });
     }

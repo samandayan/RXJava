@@ -2,7 +2,7 @@ package com.packtpub.retrofit.network;
 
 import android.support.annotation.NonNull;
 
-import com.packtpub.retrofit.Student;
+import com.packtpub.retrofit.Results;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -15,7 +15,7 @@ public class NetworkManager {
     public static void retrieveStudentName(
             @NonNull final RetrofitObjectAPI retrofitObjectAPI,
             @NonNull final int numberOfStudents,
-            @NonNull final Subscriber<Student> subscriber) {
+            @NonNull final Subscriber<Results> subscriber) {
             retrofitObjectAPI.getStudentDetails(numberOfStudents)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
