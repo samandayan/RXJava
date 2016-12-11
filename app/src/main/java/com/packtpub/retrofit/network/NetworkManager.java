@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
  * Created by Sam on 12/8/2016.
  */
 public class NetworkManager {
-    public static void retrieveStudentName(
+    public void retrieveStudentName(
             @NonNull final RetrofitObjectAPI retrofitObjectAPI,
             @NonNull final int numberOfStudents,
             @NonNull final Subscriber<Results> subscriber) {

@@ -11,14 +11,19 @@ import com.packtpub.retrofit.network.NetworkManager;
 import com.packtpub.retrofit.network.RetrofitObjectAPI;
 import com.packtpub.retrofit.util.Constants;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Inject NetworkManager mNetworkManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ((MyApp) getApplication()).getNetComponent().inject(this);
 
         Button ButtonObject = (Button) findViewById(R.id.RetrofitObject);
 
@@ -31,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRetrofitObject() {
-        NetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class), Constants.NUMBER_OF_STUDENT, new Subscriber<Results>() {
+
+        mNetworkManager.retrieveStudentName(ClientManager.getRetrofitOjectProvider(RetrofitObjectAPI.class), Constants.NUMBER_OF_STUDENT, new Subscriber<Results>() {
             @Override
             public void onCompleted() {
             }
